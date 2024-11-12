@@ -1,0 +1,7 @@
+resources:
+  # - configmap.yaml
+  - mysql-config.yml
+  - mysql-statefulset.yml
+  - mysql-service-headness.yml
+  - mysql-pvc.yml
+  - mysql-secret.yml
