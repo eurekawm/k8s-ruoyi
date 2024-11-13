@@ -1,0 +1,6 @@
+resources:
+  # - configmap.yaml
+  - nacos-config.yml
+  - nacos-statefulset.yml
+  - nacos-pvc.yml
+  - nacos-service.yml

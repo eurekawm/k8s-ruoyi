@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: ruoyi-nacos
+  name: ruoyi-nacos
+  namespace: ruoyi-basic
+spec:
+  serviceName: ruoyi-nacos
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ruoyi-nacos
+  template:
+    metadata:
+      labels:
+        app: ruoyi-nacos
+    spec:
+      containers:
+        - env:
+            - name: MODE
+              value: standalone
+          image: nacos/nacos-server:v2.2.3
+          name: ruoyi-nacos
+          ports:
+            - containerPort: 8848
+            - containerPort: 9848
+            - containerPort: 9849
+          volumeMounts:
+            - mountPath: /home/nacos/data
+              name: ruoyi-nacos-data-pvc
+            - mountPath: /home/nacos/logs
+              name: ruoyi-nacos-log-pvc
+            - mountPath: /home/nacos/conf/application.properties
+              name: ruoyi-nacos-config
+              subPath: application.properties
+      restartPolicy: Always
+      volumes:
+        - name: ruoyi-nacos-data-pvc
+          persistentVolumeClaim:
+            claimName: ruoyi-nacos-data-pvc
+        - name: ruoyi-nacos-log-pvc
+          persistentVolumeClaim:
+            claimName: ruoyi-nacos-log-pvc
+        - name: ruoyi-nacos-config
+          configMap:
+            name: ruoyi-nacos-configmap
+            items:
+              - key: application.properties
+                path: application.properties
+            defaultMode: 420

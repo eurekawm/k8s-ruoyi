@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ruoyi-nacos-data-pv
+  namespace: ruoyi-basic
+  labels:
+    pv: ruoyi-nacos-data-pv
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /data/nacos/data
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - node1
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ruoyi-nacos-log-pv
+  namespace: ruoyi-basic
+  labels:
+    pv: ruoyi-nacos-log-pv
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /data/nacos/log
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - node1
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ruoyi-nacos-data-pvc
+  namespace: ruoyi-basic
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 200Mi
+  storageClassName: local-storage
+  selector:
+    matchLabels:
+      pv: ruoyi-nacos-data-pv
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ruoyi-nacos-log-pvc
+  namespace: ruoyi-basic
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 200Mi
+  storageClassName: local-storage
+  selector:
+    matchLabels:
+      pv: ruoyi-nacos-log-pv
