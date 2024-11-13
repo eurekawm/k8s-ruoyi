@@ -21,7 +21,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - orbstack
+                - node1
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -46,7 +46,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - orbstack
+                - node1
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
