@@ -1,82 +1,101 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: ruoyi-nacos-data-pv
-  namespace: ruoyi-basic
+  name: nacos-pv-0
   labels:
-    pv: ruoyi-nacos-data-pv
+    app: nacos
+    nacos-name: nacos-0    # 添加唯一标识
 spec:
   capacity:
-    storage: 5Gi
+    storage: 1Gi
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: local-storage
-  local:
-    path: /data/nacos/data
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - node1
+  hostPath:
+    path: /data/nacos/nacos-0
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: ruoyi-nacos-log-pv
-  namespace: ruoyi-basic
+  name: nacos-pv-1
   labels:
-    pv: ruoyi-nacos-log-pv
+    app: nacos
+    nacos-name: nacos-1    # 添加唯一标识
 spec:
   capacity:
-    storage: 5Gi
+    storage: 1Gi
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: local-storage
-  local:
-    path: /data/nacos/log
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - node1
+  hostPath:
+    path: /data/nacos/nacos-1
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nacos-pv-2
+  labels:
+    app: nacos
+    nacos-name: nacos-2    # 添加唯一标识
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /data/nacos/nacos-2
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ruoyi-nacos-data-pvc
+  name: nacos-pvc-0
   namespace: ruoyi-basic
+  labels:
+    app: nacos
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 200Mi
-  storageClassName: local-storage
+      storage: 1Gi
   selector:
     matchLabels:
-      pv: ruoyi-nacos-data-pv
+      app: nacos
+      nacos-name: nacos-0
 ---
-
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ruoyi-nacos-log-pvc
+  name: nacos-pvc-1
   namespace: ruoyi-basic
+  labels:
+    app: nacos
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 200Mi
-  storageClassName: local-storage
+      storage: 1Gi
   selector:
     matchLabels:
-      pv: ruoyi-nacos-log-pv
+      app: nacos
+      nacos-name: nacos-1
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nacos-pvc-2
+  namespace: ruoyi-basic
+  labels:
+    app: nacos
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  selector:
+    matchLabels:
+      app: nacos
+      nacos-name: nacos-2

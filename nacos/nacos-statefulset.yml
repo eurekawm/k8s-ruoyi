@@ -1,25 +1,22 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: ruoyi-nacos
+  name: nacos
   namespace: ruoyi-basic
 spec:
-  serviceName: ruoyi-nacos
+  serviceName: nacos-headless
   replicas: 3
-  selector:
-    matchLabels:
-      app: ruoyi-nacos
   template:
     metadata:
       labels:
-        app: ruoyi-nacos
+        app: nacos
     spec:
       containers:
         - name: nacos
           image: nacos/nacos-server:v2.2.3
           ports:
             - containerPort: 8848
-              name: server
+              name: client
             - containerPort: 9848
               name: client-rpc
             - containerPort: 9849
@@ -52,26 +49,6 @@ spec:
                 configMapKeyRef:
                   name: nacos-config
                   key: mysql.password
-            - name: NACOS_AUTH_ENABLE
-              valueFrom:
-                configMapKeyRef:
-                  name: nacos-config
-                  key: nacos.auth.enable
-            - name: NACOS_AUTH_TOKEN
-              valueFrom:
-                configMapKeyRef:
-                  name: nacos-config
-                  key: nacos.core.auth.plugin.nacos.token.secret.key
-            - name: NACOS_AUTH_IDENTITY_KEY
-              valueFrom:
-                configMapKeyRef:
-                  name: nacos-config
-                  key: nacos.core.auth.server.identity.key
-            - name: NACOS_AUTH_IDENTITY_VALUE
-              valueFrom:
-                configMapKeyRef:
-                  name: nacos-config
-                  key: nacos.core.auth.server.identity.value
             - name: MODE
               value: "cluster"
             - name: NACOS_SERVER_PORT
@@ -79,25 +56,26 @@ spec:
             - name: PREFER_HOST_MODE
               value: "hostname"
             - name: NACOS_SERVERS
-              value: "ruoyi-nacos-0.ruoyi-basic.svc.cluster.local:8848 ruoyi-nacos-1.ruoyi-basic.svc.cluster.local:8848 ruoyi-nacos-2.ruoyi-basic.svc.cluster.local:8848"
+              value: "nacos-0.nacos-headless.ruoyi-basic.svc.cluster.local:8848 nacos-1.nacos-headless.ruoyi-basic.svc.cluster.local:8848 nacos-2.nacos-headless.ruoyi-basic.svc.cluster.local:8848"
           resources:
             requests:
               memory: "2Gi"
               cpu: "500m"
             limits:
               memory: "4Gi"
-              cpu: "2"
+              cpu: "2000m"
           livenessProbe:
             httpGet:
-              path: /nacos/actuator/health
               port: 8848
-            initialDelaySeconds: 30
+              path: /nacos/v1/console/health/readiness
+            initialDelaySeconds: 60
             periodSeconds: 10
-            timeoutSeconds: 5
           readinessProbe:
             httpGet:
-              path: /nacos/actuator/health
               port: 8848
-            initialDelaySeconds: 30
+              path: /nacos/v1/console/health/readiness
+            initialDelaySeconds: 60
             periodSeconds: 10
-            timeoutSeconds: 5
+  selector:
+    matchLabels:
+      app: nacos

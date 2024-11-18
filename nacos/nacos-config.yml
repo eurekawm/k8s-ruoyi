@@ -9,7 +9,3 @@ data:
   mysql.port: "3306"
   mysql.user: "root"
   mysql.password: "123"
-  nacos.auth.enable: "true"
-  nacos.core.auth.plugin.nacos.token.secret.key: "SecretKey012345678901234567890123456789012345678901234567890123456789"
-  nacos.core.auth.server.identity.key: "serverIdentity"
-  nacos.core.auth.server.identity.value: "security"
