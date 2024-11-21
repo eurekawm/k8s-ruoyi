@@ -6,6 +6,9 @@ metadata:
 spec:
   serviceName: nacos-headless
   replicas: 3
+  selector:
+    matchLabels:
+      app: nacos
   template:
     metadata:
       labels:
@@ -13,7 +16,8 @@ spec:
     spec:
       containers:
         - name: nacos
-          image: nacos/nacos-server:v2.2.3
+          imagePullPolicy: Always
+          image: nacos/nacos-server:latest
           ports:
             - containerPort: 8848
               name: client
@@ -24,6 +28,17 @@ spec:
           env:
             - name: NACOS_REPLICAS
               value: "3"
+            - name: NACOS_SERVERS
+              valueFrom:
+                configMapKeyRef:
+                  name: nacos-config
+                  key: nacos-cluster.conf
+            - name: MODE
+              value: "cluster"
+            - name: NACOS_NAMESPACE   # 添加在这里
+              value: "ruoyi-basic"
+            - name: SPRING_DATASOURCE_PLATFORM
+              value: "mysql"
             - name: MYSQL_SERVICE_HOST
               valueFrom:
                 configMapKeyRef:
@@ -49,14 +64,12 @@ spec:
                 configMapKeyRef:
                   name: nacos-config
                   key: mysql.password
-            - name: MODE
-              value: "cluster"
-            - name: NACOS_SERVER_PORT
-              value: "8848"
-            - name: PREFER_HOST_MODE
-              value: "hostname"
-            - name: NACOS_SERVERS
-              value: "nacos-0.nacos-headless.ruoyi-basic.svc.cluster.local:8848 nacos-1.nacos-headless.ruoyi-basic.svc.cluster.local:8848 nacos-2.nacos-headless.ruoyi-basic.svc.cluster.local:8848"
+            - name: JVM_XMS
+              value: "2g"
+            - name: JVM_XMX
+              value: "2g"
+            - name: JVM_XMN
+              value: "1g"
           resources:
             requests:
               memory: "2Gi"
@@ -66,16 +79,15 @@ spec:
               cpu: "2000m"
           livenessProbe:
             httpGet:
-              port: 8848
               path: /nacos/v1/console/health/readiness
+              port: 8848
             initialDelaySeconds: 60
             periodSeconds: 10
+            timeoutSeconds: 5
           readinessProbe:
             httpGet:
-              port: 8848
               path: /nacos/v1/console/health/readiness
+              port: 8848
             initialDelaySeconds: 60
             periodSeconds: 10
-  selector:
-    matchLabels:
-      app: nacos
+            timeoutSeconds: 5

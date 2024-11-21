@@ -9,3 +9,7 @@ data:
   mysql.port: "3306"
   mysql.user: "root"
   mysql.password: "123"
+  nacos-cluster.conf: |
+    nacos-0.nacos-headless.ruoyi-basic.svc.cluster.local:8848
+    nacos-1.nacos-headless.ruoyi-basic.svc.cluster.local:8848
+    nacos-2.nacos-headless.ruoyi-basic.svc.cluster.local:8848
