@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: nacos
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           image: nacos/nacos-server:latest
           ports:
             - containerPort: 8848

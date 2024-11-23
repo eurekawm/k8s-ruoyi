@@ -3,3 +3,4 @@ resources:
   - nacos-config.yml
   - nacos-statefulset.yml
   - nacos-service.yml
+  - nacos-ingress.yml

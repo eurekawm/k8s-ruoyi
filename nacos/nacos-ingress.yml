@@ -1,0 +1,42 @@
+---
+# 定义基础安全头中间件
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: nacos-basic-headers
+  namespace: ruoyi-basic
+spec:
+  headers:
+    customResponseHeaders:
+      X-Content-Type-Options: "nosniff"
+      X-Frame-Options: "SAMEORIGIN"
+---
+# 定义重试中间件
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: nacos-retry
+  namespace: ruoyi-basic
+spec:
+  retry:
+    attempts: 3
+    initialInterval: "500ms"
+---
+# 定义 IngressRoute
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nacos-route
+  namespace: ruoyi-basic
+spec:
+  entryPoints:
+    - web  # 使用 HTTP 入口点
+  routes:
+    - kind: Rule
+      match: Host(`nacos.example.com`) && PathPrefix(`/nacos`)
+      services:
+        - name: nacos
+          port: 8848
+      middlewares:
+        - name: nacos-basic-headers
+        - name: nacos-retry

@@ -5,7 +5,7 @@ metadata:
   namespace: ruoyi-basic
 data:
   mysql.host: "mysql-master"
-  mysql.db.name: "nacos"
+  mysql.db.name: "ry-config"
   mysql.port: "3306"
   mysql.user: "root"
   mysql.password: "123"
