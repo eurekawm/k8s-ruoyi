@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ry-system
+  namespace: ruoyi-basic
+  labels:
+    app: ry-system
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: ry-system
+  template:
+    metadata:
+      name: ry-system
+      namespace: ruoyi
+      labels:
+        app: ry-system
+    spec:
+      containers:
+        - name: ry-system
+          image: milondalex455/ruoyi-system:1.0
+          ports:
+            - containerPort: 9201
+          volumeMounts:
+            - mountPath: /app/conf
+              name: config
+          imagePullPolicy: IfNotPresent
+      volumes:
+        - name: config
+          configMap:
+            name: system-config
+      restartPolicy: Always

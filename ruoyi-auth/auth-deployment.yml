@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ry-auth
+  namespace: ruoyi-basic
+  labels:
+    app: ry-auth
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: ry-auth
+  template:
+    metadata:
+      name: ry-auth
+      namespace: ruoyi
+      labels:
+        app: ry-auth
+    spec:
+      containers:
+        - name: ry-auth
+          image: milondalex455/ruoyi-auth:1.0
+          ports:
+            - containerPort: 9200
+          volumeMounts:
+            - mountPath: /app/conf
+              name: config
+          imagePullPolicy: IfNotPresent
+      volumes:
+        - name: config
+          configMap:
+            name: auth-config
+      restartPolicy: Always

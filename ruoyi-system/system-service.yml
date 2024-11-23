@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ry-system
+  namespace: ruoyi-basic
+spec:
+  selector:
+    app: ry-system
+  ports:
+    - protocol: TCP
+      port: 9201
+      targetPort: 9201
+  type: ClusterIP

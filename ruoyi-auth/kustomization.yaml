@@ -1,0 +1,5 @@
+resources:
+  # - configmap.yaml
+  - auth-configmap.yml
+  - auth-service.yml
+  - auth-deployment.yml

@@ -1,0 +1,5 @@
+resources:
+  # - configmap.yaml
+  - gateway-configmap.yml
+  - gateway-service.yml
+  - gateway-deployment.yml

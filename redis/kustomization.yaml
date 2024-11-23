@@ -1,0 +1,5 @@
+resources:
+  # - configmap.yaml
+  - redis-conf-cm.yml
+  - redis-service.yml
+  - redis-statefulset.yml

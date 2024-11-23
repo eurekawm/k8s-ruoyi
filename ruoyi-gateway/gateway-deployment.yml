@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ry-gateway
+  namespace: ruoyi-basic
+  labels:
+    app: ry-gateway
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ry-gateway
+  template:
+    metadata:
+      name: ry-gateway
+      namespace: ruoyi
+      labels:
+        app: ry-gateway
+    spec:
+      containers:
+        - name: ry-gateway
+          image: milondalex455/ruoyi-gateway:1.0
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /app/conf
+              name: config
+          imagePullPolicy: IfNotPresent
+      volumes:
+        - name: config
+          configMap:
+            name: gateway-config
+      restartPolicy: Always

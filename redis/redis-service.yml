@@ -1,0 +1,31 @@
+# 保留原有的Service用于普通访问
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: ruoyi-basic
+spec:
+  selector:
+    app: redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+  type: ClusterIP
+---
+# 添加Headless Service用于StatefulSet
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-headless
+  namespace: ruoyi-basic
+  labels:
+    app: redis
+spec:
+  clusterIP: None  # 这个是关键,设置为None使其成为无头服务
+  selector:
+    app: redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379

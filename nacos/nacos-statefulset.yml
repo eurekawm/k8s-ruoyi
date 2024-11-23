@@ -17,7 +17,7 @@ spec:
       containers:
         - name: nacos
           imagePullPolicy: IfNotPresent
-          image: nacos/nacos-server:latest
+          image: nacos/nacos-server:v2.2.3
           ports:
             - containerPort: 8848
               name: client
@@ -81,13 +81,13 @@ spec:
             httpGet:
               path: /nacos/v1/console/health/readiness
               port: 8848
-            initialDelaySeconds: 60
+            initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
           readinessProbe:
             httpGet:
               path: /nacos/v1/console/health/readiness
               port: 8848
-            initialDelaySeconds: 60
+            initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
