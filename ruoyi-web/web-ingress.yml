@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-ingress
+  namespace: ruoyi-basic  # 你的服务所在的命名空间
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: www.ruoyi.com  # 用你的域名替换
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ry-web  # 你的服务名称
+                port:
+                  number: 80  # 你的服务端口

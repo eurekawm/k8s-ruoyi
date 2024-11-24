@@ -1,0 +1,6 @@
+resources:
+  # - configmap.yaml
+  - web-configmap.yml
+  - web-service.yml
+  - web-deployment.yml
+  - web-ingress.yml

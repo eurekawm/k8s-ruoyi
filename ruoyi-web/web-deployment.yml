@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ry-web
+  namespace: ruoyi-basic
+  labels:
+    app: ry-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ry-web
+  template:
+    metadata:
+      name: ry-web
+      namespace: ruoyi-basic
+      labels:
+        app: ry-web
+    spec:
+      containers:
+        - name: ry-web
+          image: milondalex455/ruoyi-web:1.0
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d
+              name: config
+          imagePullPolicy: IfNotPresent
+      volumes:
+        - name: config
+          configMap:
+            name: web-config
+      restartPolicy: Always
